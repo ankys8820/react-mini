@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const DataTable = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +7,11 @@ const DataTable = () => {
     age: "",
   });
   const [data, setData] = useState([]);
+  const [editId, setEditID] = useState(false);
+
+  useEffect(() => {
+    if (!editId) return;
+  });
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -33,6 +38,7 @@ const DataTable = () => {
     setData(updatedList);
     alert("Data removed!");
   };
+  const handleEdit = (id) => {};
 
   //   console.log(data);
   return (
@@ -90,11 +96,22 @@ const DataTable = () => {
               {data.map((item) => (
                 <>
                   <tr key={item.id}>
-                    <td>{item.name}</td>
-                    <td>{item.gender}</td>
-                    <td>{item.age}</td>
+                    <td id={item.id} contentEditable={editId === item.id}>
+                      {item.name}
+                    </td>
+                    <td id={item.id} contentEditable={editId === item.id}>
+                      {item.gender}
+                    </td>
+                    <td id={item.id} contentEditable={editId === item.id}>
+                      {item.age}
+                    </td>
                     <td className="actions">
-                      <button className="edit">Edit</button>
+                      <button
+                        className="edit"
+                        onClick={() => setEditID(item.id)}
+                      >
+                        Edit
+                      </button>
                       <button
                         onClick={() => handleDelete(item.id)}
                         className="delete"
